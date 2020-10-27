@@ -1,0 +1,16 @@
+{
+    "name": "wdstimulus",
+    "version": "1.0.0",
+    "description": "Stimulus Introduction",
+    "scripts": {},
+    "author": "Your Name",
+    "license": "ISC",
+    "devDependencies": {
+        "@babel/core": "^7.0.0-beta.39",
+        "@babel/preset-env": "^7.0.0-beta.39",
+        "babel-loader": "^8.0.0-beta.0",
+        "babel-preset-stage-0": "^6.24.1",
+        "stimulus": "^1.1.1",
+        "webpack": "^3.10.0"
+    }
+}

@@ -1,0 +1,20 @@
+Implement simple responsible, accessible and optimized mobile first login / forgot password form.
+
+You can use any css and build frameworks/tools like minifiers, linters, preprocessors, simple custom js for validation and functionality (style changes, password reveal), custom web fonts, including icons, svg for logo.
+
+Add node.js based build/optimization system, readme
+
+While working on this topic, I'd recommend you to have a look at these resources:
+
+https://medium.com/@jmanrubia/escaping-the-spa-rabbit-hole-with-turbolinks-903f942bf52c
+
+http://ricostacruz.com/rsjs/
+
+https://rscss.io/
+
+Those resources are dedicated to explanations of how to structure css and js code in non-spa applications, and what simple design patterns and frameworks can be used.
+
+Study carefully attached materials
+    Study constraint validation api https://developer.mozilla.org/ru/docs/HTML/HTML5/Constraint_validation and replace programmatic validation and styling with declarative one (use attributes and pseudoclasses)
+    To make sure you can reuse components, please also implement registration form. To simulate backend, use local storage to store credentials of registered users, and on submit validate against the local storage content.
+    Pay attention to frameworks, mentioned in this article https://medium.com/@jmanrubia/escaping-the-spa-rabbit-hole-with-turbolinks-903f942bf52c particularly turbolinks and stimulus
