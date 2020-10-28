@@ -6,11 +6,9 @@
 
 body, html {
 	height: 100%;
-  font-family: 'Roboto', sans-serif;
 }
 
 a {
-  font-family: 'Roboto', sans-serif;
 	font-size: 14px;
 	line-height: 1.7;
 	color: #666666;
@@ -40,7 +38,7 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 p {
-  font-family: 'Roboto', sans-serif;
+	font-family: Poppins-Regular;
 	font-size: 14px;
 	line-height: 1.7;
 	color: #666666;
@@ -147,7 +145,6 @@ iframe {
 .login-form-logo {
   display: block;
   text-align: center;
-  font-family: 'Roboto', sans-serif;
   font-size: 60px;
   margin: 30px 10px 0 55px;
 }
@@ -155,7 +152,7 @@ iframe {
 .login-form-title {
   display: block;
   padding: 20px;
-  font-family: 'Roboto', sans-serif;
+  font-family: Poppins-Bold;
   font-size: 24px;
   color: #333333;
   line-height: 1.2;
@@ -173,7 +170,7 @@ iframe {
 }
 
 .input-field {
-  font-family: 'Roboto', sans-serif;
+  font-family: Poppins-Regular;
   font-size: 15px;
   color: #555555;
   line-height: 1.2;
@@ -214,7 +211,7 @@ iframe {
 }
 
 .focus-input::after {
-  font-family: 'Roboto', sans-serif;
+  font-family: Poppins-Regular;
   font-size: 15px;
   color: #999999;
   line-height: 1.2;
@@ -365,7 +362,7 @@ iframe {
 }
 
 .login-form-btn {
-  font-family: 'Roboto', sans-serif;
+  font-family: Poppins-Medium;
   font-size: 15px;
   color: #bcbcbf;
   line-height: 1.2;
@@ -393,7 +390,6 @@ iframe {
 }
 
 .login-forgot-btn {
-  font-family: 'Roboto', sans-serif;
   font-size: 15px;
   color: #999999;
   line-height: 1.2;

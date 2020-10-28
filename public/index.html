@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Login V2</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="css/main.css">
+	<script src="bundle.js" async></script>
+  <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+  <div class="limiter">
+    <div class="container-login" >
+      <div class="wrap-login">
+        <form action="" class="login-form validate-form" data-controller="refreshable">
+          <span class="login-form-logo">
+            <i class="" id="logo-top"></i>
+            <i class="" id="logo-bottom"></i>
+          </span>
+
+          <div class="login-form-title" data-target="refreshable.content">Welcome</div>
+
+          <div class="wrap-input validate-input">
+            <span class="fa-input-icon">
+              <i class="fa fa-user"></i>
+            </span>
+            <input
+							class="input-field"
+							type="text"
+							name="email"
+							data-action="change->refreshable#hidePlaceholder"
+							data-target="refreshable.emailInput"
+						/>
+            <span class="focus-input" data-placeholder="Email"></span>
+          </div>
+
+          <div class="wrap-input validate-input" data-validate="Enter password">
+            <span class="fa-input-icon">
+              <i class="fa fa-lock"></i>
+            </span>
+            <span class="btn-show-pass" data-action="click->refreshable#togglePasswordVisiblity">
+              <i class="fa fa-eye" data-target="refreshable.eyeIcon"></i>
+            </span>
+            <input
+							class="input-field"
+							type="password"
+							name="pass"
+							data-target="refreshable.passwordVisiblity"
+							data-action="change->refreshable#hidePlaceholder"
+						>
+            <span class="focus-input" data-placeholder="Password"></span>
+          </div>
+
+          <div class="container-login-form-btn">
+            <div class="wrap-forget">
+              <span class="fa-inline-icon">
+                <i class="fa fa-exclamation-circle"></i>
+              </span>
+              <button class="login-forgot-btn">Forgot password</button>
+            </div>
+            <div class="wrap-login-form-btn">
+              <div class="login-form-bgbtn"></div>
+              <button class="login-form-btn" data-action="click->refreshable#refresh">
+                Login
+              </button>
+            </div>
+          </div>
+          <div class="container-lang-new-user">
+            <div class="wrap-lang-new-user">
+              <button class="login-i18n-btn">
+                <i class="fa fa-globe" aria-hidden="true"></i>
+              </button>
+
+              <button class="login-forgot-btn" href="#">
+                New user
+                <i class="fa fa-sign-in" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

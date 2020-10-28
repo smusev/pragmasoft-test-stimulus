@@ -233,21 +233,21 @@ iframe {
   transition: all 0.4s;
 }
 
-.input:focus + .focus-input100::after {
+.input-field:focus + .focus-input::after {
   top: -15px;
   display: none;
 }
 
-.input:focus + .focus-input100::before {
+.input-fielg:focus + .focus-input::before {
   width: 100%;
 }
 
-.has-val.input + .focus-input100::after {
+.has-val.input-field + .focus-input::after {
   top: -15px;
   display: none;
 }
 
-.has-val.input + .focus-input100::before {
+.has-val.input-field + .focus-input::before {
   width: 100%;
 }
 
@@ -445,7 +445,7 @@ iframe {
 #logo-top:before {
   content: '';
   position: absolute;
-  top: -3%;
+  top: -4%;
   left: -100%;
   height: 15%;
   width: 100%;
