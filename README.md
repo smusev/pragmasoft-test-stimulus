@@ -6,4 +6,4 @@ creds:
 login: user1@test.proj
 pass: password1
 
-test here: http://dev.smusev.pp.ua/v2/
+test here: http://dev.smusev.pp.ua/
