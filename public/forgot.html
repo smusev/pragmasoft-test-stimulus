@@ -12,7 +12,7 @@
   <div class="limiter">
     <div class="container-login" data-controller="refreshable">
       <div class="wrap-login">
-        <form action="" class="login-form validate-form" data-action="submit->refreshable#loginHandler">
+        <form action="" class="login-form validate-form"  data-action="submit->refreshable#resetHandler">
           <span class="login-form-logo">
             <i class="" id="logo-top"></i>
             <i class="" id="logo-bottom"></i>
@@ -37,33 +37,16 @@
             <span class="focus-input" data-placeholder="Email"></span>
           </div>
 
-          <div class="wrap-input validate-input" data-validate="wrong password">
-            <span class="fa-input-icon">
-              <i class="fa fa-lock"></i>
-            </span>
-            <span class="btn-show-pass" >
-              <i class="fa fa-eye" data-action="click->refreshable#togglePasswordVisiblity"></i>
-            </span>
-            <input
-							class="input-field"
-							type="password"
-							name="pass"
-							data-target="refreshable.passwordInput"
-							data-action="change->refreshable#hidePlaceholder"
-						>
-            <span class="focus-input" data-placeholder="Password"></span>
-          </div>
-
           <div class="container-login-form-btn">
             <div class="wrap-forget">
               <span class="fa-inline-icon">
                 <i class="fa fa-exclamation-circle"></i>
               </span>
-              <a class="login-forgot-btn" data-action="click->refreshable#forgotHandler">Forgot password</a>
+              <a class="login-forgot-btn" data-action="click->refreshable#backToLoginHandler">Back to login</a>
             </div>
             <div class="wrap-login-form-btn">
 							<button class="login-form-btn">
-								Login
+								Reset
               </button>
             </div>
           </div>

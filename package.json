@@ -12,5 +12,8 @@
         "babel-preset-stage-0": "^6.24.1",
         "stimulus": "^1.1.1",
         "webpack": "^3.10.0"
+    },
+    "dependencies": {
+        "turbolinks": "^5.2.0"
     }
 }
