@@ -28,7 +28,8 @@ export default class extends Controller {
   }
 
   validateInput(event){
-    let isLegit = getEmail(event.target.value)
+    let isLegit = getEmail(event.target.value.toLowerCase())
+    console.log(isLegit)
     if(event.target.value.trim().match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) !== null) {
       if (isLegit){
         this.emailInputTarget.classList.remove('not-legit')
@@ -40,6 +41,7 @@ export default class extends Controller {
         this.emailInputTarget.classList.add('not-legit')
         this.validCheckmarkTarget.classList.remove('fa-check')
         this.validCheckmarkTarget.classList.add('fa-times')
+        this.contentTarget.innerHTML = "Email not found"
       }
     } else if( event.target.value.trim() === ""){
       this.validCheckmarkTarget.classList.remove('fa-times')
@@ -51,13 +53,14 @@ export default class extends Controller {
       this.validCheckmarkTarget.classList.add('fa-times')
       this.emailInputTarget.classList.remove('is-legit')
       this.emailInputTarget.classList.remove('not-legit')
+      this.contentTarget.innerHTML = "Check email spelling"
     }
   }
 
   loginHandler(event){
     event.preventDefault()
     event.stopImmediatePropagation()
-    let email = event.target.elements.email.value
+    let email = event.target.elements.email.value.trim().toLowerCase()
     let pass = event.target.elements.pass.value
     let isAuth = getUser(email, pass)
     if (isAuth) {
@@ -75,13 +78,14 @@ export default class extends Controller {
       event.submitter.classList.add('btn-danger')
       this.passwordInputTarget.classList.remove('is-legit')
       this.passwordInputTarget.classList.add('not-legit')
+      this.contentTarget.innerHTML = "Wrong password"
     }
   }
 
   resetHandler(event){
     event.preventDefault()
     event.stopImmediatePropagation()
-    let email = event.target.elements.email.value
+    let email = event.target.elements.email.value.toLowerCase()
     let isLegit = getEmail(email)
     if (isLegit){
       event.submitter.innerText = "Done"
@@ -99,7 +103,6 @@ export default class extends Controller {
 
   forgotHandler(){
     Turbolinks.visit("./forgot.html")
-    //document.location.href = "./forgot.html";
   }
 
   backToLoginHandler(){

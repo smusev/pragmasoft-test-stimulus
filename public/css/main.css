@@ -7,6 +7,7 @@
 body, html {
 	height: 100%;
   font-family: 'Roboto', sans-serif;
+	overflow-x: hidden;
 }
 
 a {
@@ -249,7 +250,7 @@ iframe {
 
 .input-field:focus + .focus-input::after {
   top: -15px;
-  display: none;
+/*  display: none; */
 }
 
 .input-field:focus + .focus-input::before {
@@ -262,7 +263,7 @@ iframe {
 
 .has-val.input-field + .focus-input::after {
   top: -15px;
-  display: none;
+/*  display: none; */
 }
 
 .has-val.input-field + .focus-input::before {
@@ -543,4 +544,10 @@ iframe {
   width: 100%;
   background: black;
   transform: skew(0deg, 150deg);
+}
+
+
+@media (max-width: 576px) {
+  .wrap-login {
+  }
 }
