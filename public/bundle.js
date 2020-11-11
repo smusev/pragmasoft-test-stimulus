@@ -666,31 +666,26 @@ var Api = function Api() {
 
 
 (function () {
-  var logins = [{
-    'email': 'user1@test.proj',
-    'password': 'password1'
-  }, {
-    'email': 'user2@test.proj',
-    'password': 'password2'
-  }, {
-    'email': 'user3@test.proj',
-    'password': 'password3'
-  }];
-  localStorage.setItem('users', JSON.stringify(logins));
+  var logins = new Map([['user1@test.proj', 'password1'], ['user2@test.proj', 'password2'], ['user3@test.proj', 'password3']]);
+  localStorage.setItem('users', JSON.stringify(Array.from(logins)));
 })();
 
+var cachedLogins = new Map();
+
+function getLogins() {
+  if (!cachedLogins.size) {
+    cachedLogins = new Map(JSON.parse(localStorage.getItem('users')));
+  }
+}
+
 function getUser(email, pass) {
-  var storedLogins = JSON.parse(localStorage.getItem('users'));
-  var isAuth = storedLogins.some(function (user) {
-    return user.email === email && user.password === pass;
-  });
+  getLogins();
+  var isAuth = cachedLogins.get(email) === pass;
   return isAuth;
 }
 function getEmail(email) {
-  var storedLogins = JSON.parse(localStorage.getItem('users'));
-  var isLegit = storedLogins.some(function (user) {
-    return user.email === email;
-  });
+  getLogins();
+  var isLegit = cachedLogins.has(email);
   return isLegit;
 }
 
@@ -705,6 +700,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_turbolinks___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_turbolinks__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_stimulus_webpack_helpers__ = __webpack_require__(34);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__api_js__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_email_js__ = __webpack_require__(39);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_email_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_email_js__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_password_js__ = __webpack_require__(38);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_password_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__components_password_js__);
+
+
 
 
 
@@ -2253,9 +2254,9 @@ var _default = /*#__PURE__*/function (_Controller) {
     key: "validateInput",
     value: function validateInput(event) {
       var isLegit = Object(__WEBPACK_IMPORTED_MODULE_1__api__["a" /* getEmail */])(event.target.value.toLowerCase());
-      console.log(isLegit);
+      console.log(isLegit); //    if(event.target.value.trim().match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) !== null) {
 
-      if (event.target.value.trim().match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) !== null) {
+      if (true) {
         if (isLegit) {
           this.emailInputTarget.classList.remove('not-legit');
           this.emailInputTarget.classList.add('is-legit');
@@ -2266,7 +2267,7 @@ var _default = /*#__PURE__*/function (_Controller) {
           this.emailInputTarget.classList.add('not-legit');
           this.validCheckmarkTarget.classList.remove('fa-check');
           this.validCheckmarkTarget.classList.add('fa-times');
-          this.contentTarget.innerHTML = "Email not found";
+          this.contentTarget.innerHTML = "Wrong Email";
         }
       } else if (event.target.value.trim() === "") {
         this.validCheckmarkTarget.classList.remove('fa-times');
@@ -2287,7 +2288,7 @@ var _default = /*#__PURE__*/function (_Controller) {
       event.preventDefault();
       event.stopImmediatePropagation();
       var email = event.target.elements.email.value.trim().toLowerCase();
-      var pass = event.target.elements.pass.value;
+      var pass = event.target.elements.password.value;
       var isAuth = Object(__WEBPACK_IMPORTED_MODULE_1__api__["b" /* getUser */])(email, pass);
 
       if (isAuth) {
@@ -2331,16 +2332,15 @@ var _default = /*#__PURE__*/function (_Controller) {
         event.submitter.classList.add('btn-danger');
       }
     }
-  }, {
-    key: "forgotHandler",
-    value: function forgotHandler() {
-      Turbolinks.visit("./forgot.html");
-    }
-  }, {
-    key: "backToLoginHandler",
-    value: function backToLoginHandler() {
-      Turbolinks.visit("../index.html");
-    }
+    /*  forgotHandler(){
+        Turbolinks.visit("./forgot.html")
+      }
+    
+      backToLoginHandler(){
+        Turbolinks.visit("../index.html")
+      }
+    */
+
   }]);
 
   return _default;
@@ -2348,6 +2348,116 @@ var _default = /*#__PURE__*/function (_Controller) {
 
 _default.targets = ["content", "passwordInput", "emailInput", "validCheckmark"];
 
+
+/***/ }),
+/* 38 */
+/***/ (function(module, exports) {
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _wrapNativeSuper(Class) { var _cache = typeof Map === "function" ? new Map() : undefined; _wrapNativeSuper = function _wrapNativeSuper(Class) { if (Class === null || !_isNativeFunction(Class)) return Class; if (typeof Class !== "function") { throw new TypeError("Super expression must either be null or a function"); } if (typeof _cache !== "undefined") { if (_cache.has(Class)) return _cache.get(Class); _cache.set(Class, Wrapper); } function Wrapper() { return _construct(Class, arguments, _getPrototypeOf(this).constructor); } Wrapper.prototype = Object.create(Class.prototype, { constructor: { value: Wrapper, enumerable: false, writable: true, configurable: true } }); return _setPrototypeOf(Wrapper, Class); }; return _wrapNativeSuper(Class); }
+
+function _construct(Parent, args, Class) { if (_isNativeReflectConstruct()) { _construct = Reflect.construct; } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeFunction(fn) { return Function.toString.call(fn).indexOf("[native code]") !== -1; }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+var Password = /*#__PURE__*/function (_HTMLElement) {
+  _inherits(Password, _HTMLElement);
+
+  var _super = _createSuper(Password);
+
+  function Password() {
+    _classCallCheck(this, Password);
+
+    return _super.apply(this, arguments);
+  }
+
+  _createClass(Password, [{
+    key: "connectedCallback",
+    value: function connectedCallback() {
+      this.innerHTML = "\n      <div class=\"wrap-input validate-input\" >\n        <span class=\"fa-input-icon\">\n          <i class=\"fa fa-lock\"></i>\n        </span>\n        <span class=\"btn-show-pass\" >\n          <i class=\"fa fa-eye\" data-action=\"click->refreshable#togglePasswordVisiblity\"></i>\n        </span>\n        <input\n          id=\"password\"\n          class=\"input-field\"\n          type=\"password\"\n          name=\"password\"\n          placeholder=\"Password\"\n          data-target=\"refreshable.passwordInput\"\n          data-action=\"change->refreshable#hidePlaceholder\"\n          required\n        >\n        <span class=\"focus-input\" data-placeholder=\"\"></span>\n      </div>\n    ";
+    }
+  }]);
+
+  return Password;
+}( /*#__PURE__*/_wrapNativeSuper(HTMLElement));
+
+customElements.define('password-component', Password);
+
+/***/ }),
+/* 39 */
+/***/ (function(module, exports) {
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _wrapNativeSuper(Class) { var _cache = typeof Map === "function" ? new Map() : undefined; _wrapNativeSuper = function _wrapNativeSuper(Class) { if (Class === null || !_isNativeFunction(Class)) return Class; if (typeof Class !== "function") { throw new TypeError("Super expression must either be null or a function"); } if (typeof _cache !== "undefined") { if (_cache.has(Class)) return _cache.get(Class); _cache.set(Class, Wrapper); } function Wrapper() { return _construct(Class, arguments, _getPrototypeOf(this).constructor); } Wrapper.prototype = Object.create(Class.prototype, { constructor: { value: Wrapper, enumerable: false, writable: true, configurable: true } }); return _setPrototypeOf(Wrapper, Class); }; return _wrapNativeSuper(Class); }
+
+function _construct(Parent, args, Class) { if (_isNativeReflectConstruct()) { _construct = Reflect.construct; } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeFunction(fn) { return Function.toString.call(fn).indexOf("[native code]") !== -1; }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+var Email = /*#__PURE__*/function (_HTMLElement) {
+  _inherits(Email, _HTMLElement);
+
+  var _super = _createSuper(Email);
+
+  function Email() {
+    _classCallCheck(this, Email);
+
+    return _super.apply(this, arguments);
+  }
+
+  _createClass(Email, [{
+    key: "connectedCallback",
+    value: function connectedCallback() {
+      this.innerHTML = "\n      <div class=\"wrap-input validate-input\" data-validate=\"wrong email\">\n        <span class=\"fa-input-icon\">\n          <i class=\"fa fa-user\"></i>\n        </span>\n        <span class=\"btn-show-pass\">\n          <i class=\"fa fa-check\" aria-hidden=\"true\" data-target=\"refreshable.validCheckmark\"></i>\n        </span>\n        <input\n          class=\"input-field\"\n          id=\"email\"\n          type=\"email\"\n          name=\"email\"\n          placeholder=\"Email\"\n          data-action=\"change->refreshable#hidePlaceholder change->refreshable#validateInput\"\n          data-target=\"refreshable.emailInput\"\n          required\n        />\n        <span class=\"focus-input\" data-placeholder=\"\"></span>\n      </div>\n    ";
+    }
+  }]);
+
+  return Email;
+}( /*#__PURE__*/_wrapNativeSuper(HTMLElement));
+
+customElements.define('email-component', Email);
 
 /***/ })
 /******/ ]);

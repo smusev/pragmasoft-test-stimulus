@@ -1,3 +1,9 @@
+/*
+Description: login form test task
+*/
+
+@import url("normalize.css");
+
 * {
 	margin: 0px;
 	padding: 0px;
@@ -29,10 +35,6 @@ a:focus {
 a:hover {
 	text-decoration: none;
   color: #6a7dfe;
-  color: -webkit-linear-gradient(left, #21d4fd, #b721ff);
-  color: -o-linear-gradient(left, #21d4fd, #b721ff);
-  color: -moz-linear-gradient(left, #21d4fd, #b721ff);
-  color: linear-gradient(left, #21d4fd, #b721ff);
 }
 
 /*---------------------------------------------*/
@@ -57,6 +59,7 @@ ul, li {
 input {
 	outline: none;
 	border: none;
+
 }
 
 textarea {
@@ -73,6 +76,13 @@ input:focus:-moz-placeholder { color:transparent; }
 input:focus::-moz-placeholder { color:transparent; }
 input:focus:-ms-input-placeholder { color:transparent; }
 
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active  {
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+}
+
 textarea:focus::-webkit-input-placeholder { color:transparent; }
 textarea:focus:-moz-placeholder { color:transparent; }
 textarea:focus::-moz-placeholder { color:transparent; }
@@ -82,6 +92,10 @@ input::-webkit-input-placeholder { color: #adadad;}
 input:-moz-placeholder { color: #adadad;}
 input::-moz-placeholder { color: #adadad;}
 input:-ms-input-placeholder { color: #adadad;}
+
+input:required {
+    box-shadow: none;
+}
 
 textarea::-webkit-input-placeholder { color: #adadad;}
 textarea:-moz-placeholder { color: #adadad;}
@@ -99,17 +113,15 @@ button:hover {
 	cursor: pointer;
 }
 
-iframe {
-	border: none !important;
-}
-
 /*--------------------------------------------*/
 
 .fa-check {
+	display: none;
 	color: green
 }
 
 .fa-times {
+	display: none;
 	color: red
 }
 
@@ -247,15 +259,34 @@ iframe {
   transition: all 0.4s;
 }
 
+input:invalid:not(:focus):not(:placeholder-shown) + .focus-input::before{
+	width: 100%;
+	background: #e3b4ae;
+}
 
+input:invalid:not(:focus):not(:placeholder-shown), .fa-times{
+	display: block;
+}
+
+input:valid:not(:focus):not(:placeholder-shown) + .focus-input::before{
+	width: 40%;
+}
+
+input:valid:not(:focus):not(:placeholder-shown) + .btn-show-pass{
+	display: inline;
+}
+
+
+/* delete it
 .input-field:focus + .focus-input::after {
   top: -15px;
-/*  display: none; */
 }
+
 
 .input-field:focus + .focus-input::before {
   width: 50%;
 }
+
 
 .input-field:focus + .focus-input::before ~ .btn-show-pass {
   width: 100%;
@@ -263,7 +294,7 @@ iframe {
 
 .has-val.input-field + .focus-input::after {
   top: -15px;
-/*  display: none; */
+
 }
 
 .has-val.input-field + .focus-input::before {
@@ -278,7 +309,7 @@ iframe {
   width: 100%;
 	background: #e3b4ae;
 }
-
+*/
 
 .fa-input-icon {
   font-size: 16px;
@@ -449,6 +480,7 @@ iframe {
   color: #999999;
   line-height: 2.2;
   margin-left: 16px;
+	text-decoration: none;
 }
 
 

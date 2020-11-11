@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" type="text/css" href="css/main.css">
-	<script src="bundle.js" async></script>
+	<script src="bundle.js" defer></script>
   <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
 </head>
 <body>
@@ -18,31 +18,16 @@
             <i class="" id="logo-bottom"></i>
           </span>
 
-          <div class="login-form-title" data-target="refreshable.content">Welcome</div>
+          <div class="login-form-title" data-target="refreshable.content">Reset password</div>
 
-          <div class="wrap-input validate-input" data-validate="wrong email">
-            <span class="fa-input-icon">
-              <i class="fa fa-user"></i>
-            </span>
-						<span class="btn-show-pass">
-							<i class="fa " data-target="refreshable.validCheckmark"></i>
-						</span>
-            <input
-							class="input-field"
-							type="text"
-							name="email"
-							data-action="change->refreshable#hidePlaceholder change->refreshable#validateInput"
-							data-target="refreshable.emailInput"
-						/>
-            <span class="focus-input" data-placeholder="Email"></span>
-          </div>
+					<email-component></email-component>
 
           <div class="container-login-form-btn">
             <div class="wrap-forget">
               <span class="fa-inline-icon">
                 <i class="fa fa-exclamation-circle"></i>
               </span>
-              <a class="login-forgot-btn" data-action="click->refreshable#backToLoginHandler">Back to login</a>
+              <a class="login-forgot-btn" href="/">Back to login</a>
             </div>
             <div class="wrap-login-form-btn">
 							<button class="login-form-btn">
@@ -57,16 +42,14 @@
 							<i class="fa fa-globe" aria-hidden="true"></i>
 						</button>
 
-						<button class="login-forgot-btn" href="/forgot">
+						<a class="login-forgot-btn" href="/signup">
 							New user
 							<i class="fa fa-sign-in" aria-hidden="true"></i>
-						</button>
+						</a>
 					</div>
 				</div>
       </div>
     </div>
   </div>
-
-  <script src="js/main.js"></script>
 </body>
 </html>

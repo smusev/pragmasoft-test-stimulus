@@ -1,23 +1,31 @@
 export default class Api {}
 
 (function (){
-  var logins = [
-    { 'email': 'user1@test.proj', 'password': 'password1'},
-    { 'email': 'user2@test.proj', 'password': 'password2'},
-    { 'email': 'user3@test.proj', 'password': 'password3'}
-  ];
+  var logins = new Map([
+    ['user1@test.proj', 'password1'],
+    ['user2@test.proj', 'password2'],
+    ['user3@test.proj', 'password3']
+  ]);
 
-  localStorage.setItem('users', JSON.stringify(logins));
+  localStorage.setItem('users', JSON.stringify(Array.from(logins)))
 })();
 
+let cachedLogins = new Map()
+
+function getLogins() {
+  if (!cachedLogins.size) {
+    cachedLogins = new Map(JSON.parse(localStorage.getItem('users')))
+  }
+}
+
 export function getUser(email, pass){
-   let storedLogins = JSON.parse(localStorage.getItem('users'));
-   let isAuth = storedLogins.some((user) => user.email === email && user.password === pass )
-   return isAuth
+    getLogins()
+    let isAuth = cachedLogins.get(email) === pass
+    return isAuth
 }
 
 export function getEmail(email){
-   let storedLogins = JSON.parse(localStorage.getItem('users'));
-   let isLegit = storedLogins.some((user) => user.email === email )
-   return isLegit
+    getLogins()
+    let isLegit = cachedLogins.has(email)
+    return isLegit
 }

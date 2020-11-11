@@ -30,7 +30,8 @@ export default class extends Controller {
   validateInput(event){
     let isLegit = getEmail(event.target.value.toLowerCase())
     console.log(isLegit)
-    if(event.target.value.trim().match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) !== null) {
+//    if(event.target.value.trim().match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) !== null) {
+    if(true){
       if (isLegit){
         this.emailInputTarget.classList.remove('not-legit')
         this.emailInputTarget.classList.add('is-legit')
@@ -41,7 +42,7 @@ export default class extends Controller {
         this.emailInputTarget.classList.add('not-legit')
         this.validCheckmarkTarget.classList.remove('fa-check')
         this.validCheckmarkTarget.classList.add('fa-times')
-        this.contentTarget.innerHTML = "Email not found"
+        this.contentTarget.innerHTML = "Wrong Email"
       }
     } else if( event.target.value.trim() === ""){
       this.validCheckmarkTarget.classList.remove('fa-times')
@@ -61,7 +62,7 @@ export default class extends Controller {
     event.preventDefault()
     event.stopImmediatePropagation()
     let email = event.target.elements.email.value.trim().toLowerCase()
-    let pass = event.target.elements.pass.value
+    let pass = event.target.elements.password.value
     let isAuth = getUser(email, pass)
     if (isAuth) {
       event.submitter.innerText = "Log in"
@@ -101,11 +102,12 @@ export default class extends Controller {
     }
   }
 
-  forgotHandler(){
+/*  forgotHandler(){
     Turbolinks.visit("./forgot.html")
   }
 
   backToLoginHandler(){
     Turbolinks.visit("../index.html")
   }
+*/
 }
