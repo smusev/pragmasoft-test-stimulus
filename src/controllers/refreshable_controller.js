@@ -3,10 +3,10 @@ import {getUser, getEmail} from "../api"
 
 export default class extends Controller {
 
-  static targets = [ "content", "passwordInput", "emailInput", "validCheckmark" ]
+  static targets = [ "content", "passwordInput", "emailInput", "validCheckmark", "passwordField" ]
 
   connect(){}
-
+/*
   hidePlaceholder(event){
     if (event.target.value !== ""){
       event.target.classList.add('has-val')
@@ -14,19 +14,21 @@ export default class extends Controller {
       event.target.classList.remove('has-val')
     }
   }
+*/
 
   togglePasswordVisiblity(event){
-    if (this.passwordInputTarget.getAttribute('type') === "password") {
-      this.passwordInputTarget.setAttribute('type', 'text')
+    if (this.passwordFieldTarget.getAttribute('type') === "password") {
+      this.passwordFieldTarget.setAttribute('type', 'text')
       event.target.classList.toggle('fa-eye')
       event.target.classList.toggle('fa-eye-slash')
     } else {
-      this.passwordInputTarget.setAttribute('type', 'password')
+      this.passwordFieldTarget.setAttribute('type', 'password')
       event.target.classList.toggle('fa-eye')
       event.target.classList.toggle('fa-eye-slash')
     }
   }
 
+/*
   validateInput(event){
     let isLegit = getEmail(event.target.value.toLowerCase())
     console.log(isLegit)
@@ -57,31 +59,63 @@ export default class extends Controller {
       this.contentTarget.innerHTML = "Check email spelling"
     }
   }
+*/
 
   loginHandler(event){
     event.preventDefault()
     event.stopImmediatePropagation()
     let email = event.target.elements.email.value.trim().toLowerCase()
     let pass = event.target.elements.password.value
-    let isAuth = getUser(email, pass)
-    if (isAuth) {
+
+    try {
+      getUser(email, pass)
       event.submitter.innerText = "Log in"
-      event.submitter.classList.remove('btn-danger')
+      this.contentTarget.innerHTML = "Welcome"
       event.submitter.classList.add('btn-success')
+      event.submitter.classList.remove('btn-danger')
+      this.validCheckmarkTarget.classList.remove('fa-times')
+      this.validCheckmarkTarget.classList.add('fa-check')
+      this.emailInputTarget.classList.remove('not-legit')
       this.passwordInputTarget.classList.remove('not-legit')
+      this.emailInputTarget.classList.add('is-legit')
       this.passwordInputTarget.classList.add('is-legit')
-    } else {
-      if (email.trim() === ""){
-        this.emailInputTarget.classList.add('not-legit')
+
+  /*
+      if (true) {
+        this.passwordInputTarget.classList.remove('not-legit')
+        this.passwordInputTarget.classList.add('is-legit')
+      } else {
+        if (email.trim() === ""){
+          this.emailInputTarget.classList.add('not-legit')
+        }
+        this.contentTarget.innerHTML = "Wrong password"
       }
-      event.submitter.innerText = "Retry"
+*/
+    } catch (e) {
       event.submitter.classList.remove('btn-success')
       event.submitter.classList.add('btn-danger')
-      this.passwordInputTarget.classList.remove('is-legit')
-      this.passwordInputTarget.classList.add('not-legit')
-      this.contentTarget.innerHTML = "Wrong password"
-    }
+      event.submitter.innerText = "Retry"
+
+
+       console.log(e.message); // передаем исключение в обработчик ошибок
+       if (e.message === "email"){
+         this.contentTarget.innerHTML = "Wrong email"
+         this.emailInputTarget.classList.remove('is-legit')
+         this.emailInputTarget.classList.add('not-legit')
+         this.validCheckmarkTarget.classList.remove('fa-check')
+         this.validCheckmarkTarget.classList.add('fa-times')
+       } else {
+           this.contentTarget.innerHTML = "Wrong password"
+           this.validCheckmarkTarget.classList.remove('fa-times')
+           this.validCheckmarkTarget.classList.add('fa-check')
+           this.emailInputTarget.classList.remove('not-legit')
+           this.passwordInputTarget.classList.remove('is-legit')
+           this.emailInputTarget.classList.add('is-legit')
+           this.passwordInputTarget.classList.add('not-legit')
+       }
+     }
   }
+
 
   resetHandler(event){
     event.preventDefault()

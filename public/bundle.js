@@ -680,13 +680,23 @@ function getLogins() {
 
 function getUser(email, pass) {
   getLogins();
-  var isAuth = cachedLogins.get(email) === pass;
-  return isAuth;
+
+  if (cachedLogins.get(email) === pass) {
+    return true;
+  } else if (cachedLogins.get(email)) {
+    throw new LoginException("password");
+  } else {
+    throw new LoginException("email");
+  }
 }
 function getEmail(email) {
   getLogins();
   var isLegit = cachedLogins.has(email);
   return isLegit;
+}
+
+function LoginException(message) {
+  this.message = message;
 }
 
 /***/ }),
@@ -2228,60 +2238,62 @@ var _default = /*#__PURE__*/function (_Controller) {
   _createClass(_default, [{
     key: "connect",
     value: function connect() {}
-  }, {
-    key: "hidePlaceholder",
-    value: function hidePlaceholder(event) {
-      if (event.target.value !== "") {
-        event.target.classList.add('has-val');
-      } else {
-        event.target.classList.remove('has-val');
+    /*
+      hidePlaceholder(event){
+        if (event.target.value !== ""){
+          event.target.classList.add('has-val')
+        } else {
+          event.target.classList.remove('has-val')
+        }
       }
-    }
+    */
+
   }, {
     key: "togglePasswordVisiblity",
     value: function togglePasswordVisiblity(event) {
-      if (this.passwordInputTarget.getAttribute('type') === "password") {
-        this.passwordInputTarget.setAttribute('type', 'text');
+      if (this.passwordFieldTarget.getAttribute('type') === "password") {
+        this.passwordFieldTarget.setAttribute('type', 'text');
         event.target.classList.toggle('fa-eye');
         event.target.classList.toggle('fa-eye-slash');
       } else {
-        this.passwordInputTarget.setAttribute('type', 'password');
+        this.passwordFieldTarget.setAttribute('type', 'password');
         event.target.classList.toggle('fa-eye');
         event.target.classList.toggle('fa-eye-slash');
       }
     }
-  }, {
-    key: "validateInput",
-    value: function validateInput(event) {
-      var isLegit = Object(__WEBPACK_IMPORTED_MODULE_1__api__["a" /* getEmail */])(event.target.value.toLowerCase());
-      console.log(isLegit); //    if(event.target.value.trim().match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) !== null) {
-
-      if (true) {
-        if (isLegit) {
-          this.emailInputTarget.classList.remove('not-legit');
-          this.emailInputTarget.classList.add('is-legit');
-          this.validCheckmarkTarget.classList.remove('fa-times');
-          this.validCheckmarkTarget.classList.add('fa-check');
+    /*
+      validateInput(event){
+        let isLegit = getEmail(event.target.value.toLowerCase())
+        console.log(isLegit)
+    //    if(event.target.value.trim().match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) !== null) {
+        if(true){
+          if (isLegit){
+            this.emailInputTarget.classList.remove('not-legit')
+            this.emailInputTarget.classList.add('is-legit')
+            this.validCheckmarkTarget.classList.remove('fa-times')
+            this.validCheckmarkTarget.classList.add('fa-check')
+          } else {
+            this.emailInputTarget.classList.remove('is-legit')
+            this.emailInputTarget.classList.add('not-legit')
+            this.validCheckmarkTarget.classList.remove('fa-check')
+            this.validCheckmarkTarget.classList.add('fa-times')
+            this.contentTarget.innerHTML = "Wrong Email"
+          }
+        } else if( event.target.value.trim() === ""){
+          this.validCheckmarkTarget.classList.remove('fa-times')
+          this.validCheckmarkTarget.classList.remove('fa-check')
+          this.emailInputTarget.classList.remove('not-legit')
+          this.emailInputTarget.classList.remove('is-legit')
         } else {
-          this.emailInputTarget.classList.remove('is-legit');
-          this.emailInputTarget.classList.add('not-legit');
-          this.validCheckmarkTarget.classList.remove('fa-check');
-          this.validCheckmarkTarget.classList.add('fa-times');
-          this.contentTarget.innerHTML = "Wrong Email";
+          this.validCheckmarkTarget.classList.remove('fa-check')
+          this.validCheckmarkTarget.classList.add('fa-times')
+          this.emailInputTarget.classList.remove('is-legit')
+          this.emailInputTarget.classList.remove('not-legit')
+          this.contentTarget.innerHTML = "Check email spelling"
         }
-      } else if (event.target.value.trim() === "") {
-        this.validCheckmarkTarget.classList.remove('fa-times');
-        this.validCheckmarkTarget.classList.remove('fa-check');
-        this.emailInputTarget.classList.remove('not-legit');
-        this.emailInputTarget.classList.remove('is-legit');
-      } else {
-        this.validCheckmarkTarget.classList.remove('fa-check');
-        this.validCheckmarkTarget.classList.add('fa-times');
-        this.emailInputTarget.classList.remove('is-legit');
-        this.emailInputTarget.classList.remove('not-legit');
-        this.contentTarget.innerHTML = "Check email spelling";
       }
-    }
+    */
+
   }, {
     key: "loginHandler",
     value: function loginHandler(event) {
@@ -2289,25 +2301,51 @@ var _default = /*#__PURE__*/function (_Controller) {
       event.stopImmediatePropagation();
       var email = event.target.elements.email.value.trim().toLowerCase();
       var pass = event.target.elements.password.value;
-      var isAuth = Object(__WEBPACK_IMPORTED_MODULE_1__api__["b" /* getUser */])(email, pass);
 
-      if (isAuth) {
+      try {
+        Object(__WEBPACK_IMPORTED_MODULE_1__api__["b" /* getUser */])(email, pass);
         event.submitter.innerText = "Log in";
-        event.submitter.classList.remove('btn-danger');
+        this.contentTarget.innerHTML = "Welcome";
         event.submitter.classList.add('btn-success');
+        event.submitter.classList.remove('btn-danger');
+        this.validCheckmarkTarget.classList.remove('fa-times');
+        this.validCheckmarkTarget.classList.add('fa-check');
+        this.emailInputTarget.classList.remove('not-legit');
         this.passwordInputTarget.classList.remove('not-legit');
+        this.emailInputTarget.classList.add('is-legit');
         this.passwordInputTarget.classList.add('is-legit');
-      } else {
-        if (email.trim() === "") {
-          this.emailInputTarget.classList.add('not-legit');
-        }
-
-        event.submitter.innerText = "Retry";
+        /*
+            if (true) {
+              this.passwordInputTarget.classList.remove('not-legit')
+              this.passwordInputTarget.classList.add('is-legit')
+            } else {
+              if (email.trim() === ""){
+                this.emailInputTarget.classList.add('not-legit')
+              }
+              this.contentTarget.innerHTML = "Wrong password"
+            }
+        */
+      } catch (e) {
         event.submitter.classList.remove('btn-success');
         event.submitter.classList.add('btn-danger');
-        this.passwordInputTarget.classList.remove('is-legit');
-        this.passwordInputTarget.classList.add('not-legit');
-        this.contentTarget.innerHTML = "Wrong password";
+        event.submitter.innerText = "Retry";
+        console.log(e.message); // передаем исключение в обработчик ошибок
+
+        if (e.message === "email") {
+          this.contentTarget.innerHTML = "Wrong email";
+          this.emailInputTarget.classList.remove('is-legit');
+          this.emailInputTarget.classList.add('not-legit');
+          this.validCheckmarkTarget.classList.remove('fa-check');
+          this.validCheckmarkTarget.classList.add('fa-times');
+        } else {
+          this.contentTarget.innerHTML = "Wrong password";
+          this.validCheckmarkTarget.classList.remove('fa-times');
+          this.validCheckmarkTarget.classList.add('fa-check');
+          this.emailInputTarget.classList.remove('not-legit');
+          this.passwordInputTarget.classList.remove('is-legit');
+          this.emailInputTarget.classList.add('is-legit');
+          this.passwordInputTarget.classList.add('not-legit');
+        }
       }
     }
   }, {
@@ -2346,7 +2384,7 @@ var _default = /*#__PURE__*/function (_Controller) {
   return _default;
 }(__WEBPACK_IMPORTED_MODULE_0_stimulus__["b" /* Controller */]);
 
-_default.targets = ["content", "passwordInput", "emailInput", "validCheckmark"];
+_default.targets = ["content", "passwordInput", "emailInput", "validCheckmark", "passwordField"];
 
 
 /***/ }),
@@ -2395,7 +2433,7 @@ var Password = /*#__PURE__*/function (_HTMLElement) {
   _createClass(Password, [{
     key: "connectedCallback",
     value: function connectedCallback() {
-      this.innerHTML = "\n      <div class=\"wrap-input validate-input\" >\n        <span class=\"fa-input-icon\">\n          <i class=\"fa fa-lock\"></i>\n        </span>\n        <span class=\"btn-show-pass\" >\n          <i class=\"fa fa-eye\" data-action=\"click->refreshable#togglePasswordVisiblity\"></i>\n        </span>\n        <input\n          id=\"password\"\n          class=\"input-field\"\n          type=\"password\"\n          name=\"password\"\n          placeholder=\"Password\"\n          data-target=\"refreshable.passwordInput\"\n          data-action=\"change->refreshable#hidePlaceholder\"\n          required\n        >\n        <span class=\"focus-input\" data-placeholder=\"\"></span>\n      </div>\n    ";
+      this.innerHTML = "\n      <div class=\"wrap-input validate-input\"\n           data-target=\"refreshable.passwordInput\"\n      >\n        <span class=\"fa-input-icon\">\n          <i class=\"fa fa-lock\"></i>\n        </span>\n        <span class=\"btn-show-pass\" >\n          <i class=\"fa fa-eye\" data-action=\"click->refreshable#togglePasswordVisiblity\"></i>\n        </span>\n        <input\n          id=\"password\"\n          class=\"input-field\"\n          type=\"password\"\n          name=\"password\"\n          placeholder=\"Password\"\n          data-target=\"refreshable.passwordField\"\n          required\n        >\n        <span class=\"focus-input\" data-placeholder=\"\"></span>\n      </div>\n    ";
     }
   }]);
 
@@ -2450,7 +2488,7 @@ var Email = /*#__PURE__*/function (_HTMLElement) {
   _createClass(Email, [{
     key: "connectedCallback",
     value: function connectedCallback() {
-      this.innerHTML = "\n      <div class=\"wrap-input validate-input\" data-validate=\"wrong email\">\n        <span class=\"fa-input-icon\">\n          <i class=\"fa fa-user\"></i>\n        </span>\n        <span class=\"btn-show-pass\">\n          <i class=\"fa fa-check\" aria-hidden=\"true\" data-target=\"refreshable.validCheckmark\"></i>\n        </span>\n        <input\n          class=\"input-field\"\n          id=\"email\"\n          type=\"email\"\n          name=\"email\"\n          placeholder=\"Email\"\n          data-action=\"change->refreshable#hidePlaceholder change->refreshable#validateInput\"\n          data-target=\"refreshable.emailInput\"\n          required\n        />\n        <span class=\"focus-input\" data-placeholder=\"\"></span>\n      </div>\n    ";
+      this.innerHTML = "\n      <div\n        class=\"wrap-input validate-input\"\n        data-target=\"refreshable.emailInput\"\n        >\n        <span class=\"fa-input-icon\">\n          <i class=\"fa fa-user\"></i>\n        </span>\n        <span class=\"btn-show-pass\">\n          <i class=\"fa\" aria-hidden=\"true\" data-target=\"refreshable.validCheckmark\"></i>\n        </span>\n        <input\n          class=\"input-field\"\n          type=\"email\"\n          name=\"email\"\n          placeholder=\"Email\"\n          required\n        />\n        <span class=\"focus-input\" data-placeholder=\"\"></span>\n      </div>\n    ";
     }
   }]);
 

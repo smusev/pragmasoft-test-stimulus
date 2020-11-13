@@ -116,12 +116,10 @@ button:hover {
 /*--------------------------------------------*/
 
 .fa-check {
-	display: none;
 	color: green
 }
 
 .fa-times {
-	display: none;
 	color: red
 }
 
@@ -264,16 +262,18 @@ input:invalid:not(:focus):not(:placeholder-shown) + .focus-input::before{
 	background: #e3b4ae;
 }
 
-input:invalid:not(:focus):not(:placeholder-shown), .fa-times{
-	display: block;
-}
 
 input:valid:not(:focus):not(:placeholder-shown) + .focus-input::before{
 	width: 40%;
 }
 
-input:valid:not(:focus):not(:placeholder-shown) + .btn-show-pass{
-	display: inline;
+.is-legit .focus-input::before {
+  width: 100% !important;
+}
+
+.not-legit .focus-input::before {
+  width: 100% !important;
+	background: #e3b4ae !important;
 }
 
 
@@ -300,16 +300,9 @@ input:valid:not(:focus):not(:placeholder-shown) + .btn-show-pass{
 .has-val.input-field + .focus-input::before {
   width: 50%;
 }
-
-.is-legit.input-field + .focus-input::before {
-  width: 100%;
-}
-
-.not-legit.input-field + .focus-input::before {
-  width: 100%;
-	background: #e3b4ae;
-}
 */
+
+
 
 .fa-input-icon {
   font-size: 16px;
@@ -468,7 +461,6 @@ input:valid:not(:focus):not(:placeholder-shown) + .btn-show-pass{
 .wrap-login-form-btn:hover .login-form-bgbtn {
   left: 0;
 }
-
 
 .wrap-forget {
   display: flex;

@@ -1,7 +1,9 @@
 class Password extends HTMLElement {
   connectedCallback() {
     this.innerHTML = `
-      <div class="wrap-input validate-input" >
+      <div class="wrap-input validate-input"
+           data-target="refreshable.passwordInput"
+      >
         <span class="fa-input-icon">
           <i class="fa fa-lock"></i>
         </span>
@@ -14,8 +16,7 @@ class Password extends HTMLElement {
           type="password"
           name="password"
           placeholder="Password"
-          data-target="refreshable.passwordInput"
-          data-action="change->refreshable#hidePlaceholder"
+          data-target="refreshable.passwordField"
           required
         >
         <span class="focus-input" data-placeholder=""></span>

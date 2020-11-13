@@ -20,12 +20,21 @@ function getLogins() {
 
 export function getUser(email, pass){
     getLogins()
-    let isAuth = cachedLogins.get(email) === pass
-    return isAuth
+    if (cachedLogins.get(email) === pass) {
+      return true
+    } else if (cachedLogins.get(email)){
+      throw new LoginException("password");
+    } else {
+      throw new LoginException("email");
+    }
 }
 
 export function getEmail(email){
     getLogins()
     let isLegit = cachedLogins.has(email)
     return isLegit
+}
+
+function LoginException(message) {
+   this.message = message;
 }
