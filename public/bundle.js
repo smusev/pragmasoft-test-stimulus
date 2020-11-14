@@ -655,8 +655,9 @@ var defaultSchema = {
 
 "use strict";
 /* unused harmony export default */
-/* harmony export (immutable) */ __webpack_exports__["b"] = getUser;
-/* harmony export (immutable) */ __webpack_exports__["a"] = getEmail;
+/* harmony export (immutable) */ __webpack_exports__["a"] = getUser;
+/* harmony export (immutable) */ __webpack_exports__["b"] = newUser;
+/* harmony export (immutable) */ __webpack_exports__["c"] = resetEmail;
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Api = function Api() {
@@ -680,19 +681,39 @@ function getLogins() {
 
 function getUser(email, pass) {
   getLogins();
+  console.log(email, pass);
 
   if (cachedLogins.get(email) === pass) {
-    return true;
+    return {
+      isAuth: true
+    };
   } else if (cachedLogins.get(email)) {
     throw new LoginException("password");
   } else {
     throw new LoginException("email");
   }
 }
-function getEmail(email) {
+function newUser(email, pass) {
   getLogins();
-  var isLegit = cachedLogins.has(email);
-  return isLegit;
+
+  if (cachedLogins.get(email)) {
+    throw new LoginException("email");
+  } else {
+    addUser(email, pass);
+    return {
+      registered: true
+    };
+  }
+}
+function resetEmail(email) {
+  getLogins();
+  var status = cachedLogins.has(email);
+  return status;
+}
+
+function addUser(email, pass) {
+  cachedLogins.set(email, pass);
+  localStorage.setItem('users', JSON.stringify(Array.from(cachedLogins)));
 }
 
 function LoginException(message) {
@@ -710,9 +731,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_turbolinks___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_turbolinks__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_stimulus_webpack_helpers__ = __webpack_require__(34);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__api_js__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_email_js__ = __webpack_require__(39);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_email_js__ = __webpack_require__(36);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_email_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_email_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_password_js__ = __webpack_require__(38);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_password_js__ = __webpack_require__(37);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_password_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__components_password_js__);
 
 
@@ -723,7 +744,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 var turbolinks = __WEBPACK_IMPORTED_MODULE_1_turbolinks___default.a;
 var application = __WEBPACK_IMPORTED_MODULE_0_stimulus__["a" /* Application */].start();
 
-var context = __webpack_require__(36);
+var context = __webpack_require__(38);
 
 application.load(Object(__WEBPACK_IMPORTED_MODULE_2_stimulus_webpack_helpers__["a" /* definitionsFromContext */])(context));
 turbolinks.start();
@@ -2169,10 +2190,120 @@ function identifierForContextKey(key) {
 
 /***/ }),
 /* 36 */
+/***/ (function(module, exports) {
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _wrapNativeSuper(Class) { var _cache = typeof Map === "function" ? new Map() : undefined; _wrapNativeSuper = function _wrapNativeSuper(Class) { if (Class === null || !_isNativeFunction(Class)) return Class; if (typeof Class !== "function") { throw new TypeError("Super expression must either be null or a function"); } if (typeof _cache !== "undefined") { if (_cache.has(Class)) return _cache.get(Class); _cache.set(Class, Wrapper); } function Wrapper() { return _construct(Class, arguments, _getPrototypeOf(this).constructor); } Wrapper.prototype = Object.create(Class.prototype, { constructor: { value: Wrapper, enumerable: false, writable: true, configurable: true } }); return _setPrototypeOf(Wrapper, Class); }; return _wrapNativeSuper(Class); }
+
+function _construct(Parent, args, Class) { if (_isNativeReflectConstruct()) { _construct = Reflect.construct; } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeFunction(fn) { return Function.toString.call(fn).indexOf("[native code]") !== -1; }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+var Email = /*#__PURE__*/function (_HTMLElement) {
+  _inherits(Email, _HTMLElement);
+
+  var _super = _createSuper(Email);
+
+  function Email() {
+    _classCallCheck(this, Email);
+
+    return _super.apply(this, arguments);
+  }
+
+  _createClass(Email, [{
+    key: "connectedCallback",
+    value: function connectedCallback() {
+      this.innerHTML = "\n      <div\n        class=\"wrap-input validate-input\"\n        data-target=\"refreshable.emailInput\"\n        >\n        <span class=\"fa-input-icon\">\n          <i class=\"fa fa-user\"></i>\n        </span>\n        <span class=\"btn-show-pass\">\n          <i class=\"fa\" aria-hidden=\"true\" data-target=\"refreshable.validCheckmark\"></i>\n        </span>\n        <input\n          class=\"input-field\"\n          type=\"email\"\n          name=\"email\"\n          placeholder=\"Email\"\n          maxlength=\"64\"\n          required\n        />\n        <span class=\"focus-input\" data-placeholder=\"\"></span>\n      </div>\n    ";
+    }
+  }]);
+
+  return Email;
+}( /*#__PURE__*/_wrapNativeSuper(HTMLElement));
+
+customElements.define('email-component', Email);
+
+/***/ }),
+/* 37 */
+/***/ (function(module, exports) {
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _wrapNativeSuper(Class) { var _cache = typeof Map === "function" ? new Map() : undefined; _wrapNativeSuper = function _wrapNativeSuper(Class) { if (Class === null || !_isNativeFunction(Class)) return Class; if (typeof Class !== "function") { throw new TypeError("Super expression must either be null or a function"); } if (typeof _cache !== "undefined") { if (_cache.has(Class)) return _cache.get(Class); _cache.set(Class, Wrapper); } function Wrapper() { return _construct(Class, arguments, _getPrototypeOf(this).constructor); } Wrapper.prototype = Object.create(Class.prototype, { constructor: { value: Wrapper, enumerable: false, writable: true, configurable: true } }); return _setPrototypeOf(Wrapper, Class); }; return _wrapNativeSuper(Class); }
+
+function _construct(Parent, args, Class) { if (_isNativeReflectConstruct()) { _construct = Reflect.construct; } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeFunction(fn) { return Function.toString.call(fn).indexOf("[native code]") !== -1; }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+var Password = /*#__PURE__*/function (_HTMLElement) {
+  _inherits(Password, _HTMLElement);
+
+  var _super = _createSuper(Password);
+
+  function Password() {
+    _classCallCheck(this, Password);
+
+    return _super.apply(this, arguments);
+  }
+
+  _createClass(Password, [{
+    key: "connectedCallback",
+    value: function connectedCallback() {
+      this.innerHTML = "\n      <div class=\"wrap-input validate-input\"\n           data-target=\"refreshable.passwordInput\"\n      >\n        <span class=\"fa-input-icon\">\n          <i class=\"fa fa-lock\"></i>\n        </span>\n        <span class=\"btn-show-pass\" >\n          <i class=\"fa fa-eye\" data-action=\"click->refreshable#togglePasswordVisiblity\"></i>\n        </span>\n        <input\n          id=\"password\"\n          class=\"input-field\"\n          type=\"password\"\n          name=\"password\"\n          placeholder=\"Password\"\n          data-target=\"refreshable.passwordField\"\n          minlength=\"8\"\n          maxlength=\"32\"\n          required\n        >\n        <span class=\"focus-input\" data-placeholder=\"\"></span>\n      </div>\n    ";
+    }
+  }]);
+
+  return Password;
+}( /*#__PURE__*/_wrapNativeSuper(HTMLElement));
+
+customElements.define('password-component', Password);
+
+/***/ }),
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./refreshable_controller.js": 37
+	"./refreshable_controller.js": 39
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -2188,10 +2319,10 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 36;
+webpackContext.id = 38;
 
 /***/ }),
-/* 37 */
+/* 39 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2238,16 +2369,6 @@ var _default = /*#__PURE__*/function (_Controller) {
   _createClass(_default, [{
     key: "connect",
     value: function connect() {}
-    /*
-      hidePlaceholder(event){
-        if (event.target.value !== ""){
-          event.target.classList.add('has-val')
-        } else {
-          event.target.classList.remove('has-val')
-        }
-      }
-    */
-
   }, {
     key: "togglePasswordVisiblity",
     value: function togglePasswordVisiblity(event) {
@@ -2261,39 +2382,6 @@ var _default = /*#__PURE__*/function (_Controller) {
         event.target.classList.toggle('fa-eye-slash');
       }
     }
-    /*
-      validateInput(event){
-        let isLegit = getEmail(event.target.value.toLowerCase())
-        console.log(isLegit)
-    //    if(event.target.value.trim().match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) !== null) {
-        if(true){
-          if (isLegit){
-            this.emailInputTarget.classList.remove('not-legit')
-            this.emailInputTarget.classList.add('is-legit')
-            this.validCheckmarkTarget.classList.remove('fa-times')
-            this.validCheckmarkTarget.classList.add('fa-check')
-          } else {
-            this.emailInputTarget.classList.remove('is-legit')
-            this.emailInputTarget.classList.add('not-legit')
-            this.validCheckmarkTarget.classList.remove('fa-check')
-            this.validCheckmarkTarget.classList.add('fa-times')
-            this.contentTarget.innerHTML = "Wrong Email"
-          }
-        } else if( event.target.value.trim() === ""){
-          this.validCheckmarkTarget.classList.remove('fa-times')
-          this.validCheckmarkTarget.classList.remove('fa-check')
-          this.emailInputTarget.classList.remove('not-legit')
-          this.emailInputTarget.classList.remove('is-legit')
-        } else {
-          this.validCheckmarkTarget.classList.remove('fa-check')
-          this.validCheckmarkTarget.classList.add('fa-times')
-          this.emailInputTarget.classList.remove('is-legit')
-          this.emailInputTarget.classList.remove('not-legit')
-          this.contentTarget.innerHTML = "Check email spelling"
-        }
-      }
-    */
-
   }, {
     key: "loginHandler",
     value: function loginHandler(event) {
@@ -2303,49 +2391,59 @@ var _default = /*#__PURE__*/function (_Controller) {
       var pass = event.target.elements.password.value;
 
       try {
-        Object(__WEBPACK_IMPORTED_MODULE_1__api__["b" /* getUser */])(email, pass);
-        event.submitter.innerText = "Log in";
-        this.contentTarget.innerHTML = "Welcome";
-        event.submitter.classList.add('btn-success');
-        event.submitter.classList.remove('btn-danger');
-        this.validCheckmarkTarget.classList.remove('fa-times');
-        this.validCheckmarkTarget.classList.add('fa-check');
-        this.emailInputTarget.classList.remove('not-legit');
-        this.passwordInputTarget.classList.remove('not-legit');
-        this.emailInputTarget.classList.add('is-legit');
-        this.passwordInputTarget.classList.add('is-legit');
-        /*
-            if (true) {
-              this.passwordInputTarget.classList.remove('not-legit')
-              this.passwordInputTarget.classList.add('is-legit')
-            } else {
-              if (email.trim() === ""){
-                this.emailInputTarget.classList.add('not-legit')
-              }
-              this.contentTarget.innerHTML = "Wrong password"
-            }
-        */
+        var user = Object(__WEBPACK_IMPORTED_MODULE_1__api__["a" /* getUser */])(email, pass);
+        this.setFormState({
+          email: true,
+          password: true,
+          button: "success",
+          buttonText: "Log in",
+          message: "Welcome"
+        });
       } catch (e) {
-        event.submitter.classList.remove('btn-success');
-        event.submitter.classList.add('btn-danger');
-        event.submitter.innerText = "Retry";
-        console.log(e.message); // передаем исключение в обработчик ошибок
-
         if (e.message === "email") {
-          this.contentTarget.innerHTML = "Wrong email";
-          this.emailInputTarget.classList.remove('is-legit');
-          this.emailInputTarget.classList.add('not-legit');
-          this.validCheckmarkTarget.classList.remove('fa-check');
-          this.validCheckmarkTarget.classList.add('fa-times');
+          this.setFormState({
+            email: false,
+            password: false,
+            button: "danger",
+            buttonText: "Retry",
+            message: "Wrong email"
+          });
         } else {
-          this.contentTarget.innerHTML = "Wrong password";
-          this.validCheckmarkTarget.classList.remove('fa-times');
-          this.validCheckmarkTarget.classList.add('fa-check');
-          this.emailInputTarget.classList.remove('not-legit');
-          this.passwordInputTarget.classList.remove('is-legit');
-          this.emailInputTarget.classList.add('is-legit');
-          this.passwordInputTarget.classList.add('not-legit');
+          this.setFormState({
+            email: true,
+            password: false,
+            button: "danger",
+            buttonText: "Retry",
+            message: "Wrong password"
+          });
         }
+      }
+    }
+  }, {
+    key: "signUpHandler",
+    value: function signUpHandler(e) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      var email = event.target.elements.email.value.trim().toLowerCase();
+      var pass = event.target.elements.password.value;
+
+      try {
+        var user = Object(__WEBPACK_IMPORTED_MODULE_1__api__["b" /* newUser */])(email, pass);
+        this.setFormState({
+          email: true,
+          password: true,
+          button: "success",
+          buttonText: "Done",
+          message: "Registered"
+        });
+      } catch (e) {
+        this.setFormState({
+          email: false,
+          password: false,
+          button: "danger",
+          buttonText: "Retry",
+          message: "Email already in use"
+        });
       }
     }
   }, {
@@ -2353,149 +2451,73 @@ var _default = /*#__PURE__*/function (_Controller) {
     value: function resetHandler(event) {
       event.preventDefault();
       event.stopImmediatePropagation();
-      var email = event.target.elements.email.value.toLowerCase();
-      var isLegit = Object(__WEBPACK_IMPORTED_MODULE_1__api__["a" /* getEmail */])(email);
+      var email = event.target.elements.email.value.toLowerCase().trim();
+      var isLegit = Object(__WEBPACK_IMPORTED_MODULE_1__api__["c" /* resetEmail */])(email);
 
       if (isLegit) {
-        event.submitter.innerText = "Done";
+        this.setFormState({
+          email: true,
+          button: "success",
+          buttonText: "Done",
+          message: "Success"
+        });
+      } else {
+        this.setFormState({
+          email: false,
+          button: "danger",
+          buttonText: "Retry",
+          message: "Wrong email"
+        });
+      }
+    }
+  }, {
+    key: "setFormState",
+    value: function setFormState(state) {
+      this.contentTarget.innerHTML = state.message;
+      event.submitter.innerText = state.buttonText;
+      console.log(state);
+
+      if (state.email === true) {
+        this.emailInputTarget.classList.remove('not-legit');
+        this.emailInputTarget.classList.add('is-legit');
+        this.validCheckmarkTarget.classList.remove('fa-times');
+        this.validCheckmarkTarget.classList.add('fa-check');
+      }
+
+      if (state.email === false) {
+        this.emailInputTarget.classList.remove('is-legit');
+        this.emailInputTarget.classList.add('not-legit');
+        this.validCheckmarkTarget.classList.remove('fa-check');
+        this.validCheckmarkTarget.classList.add('fa-times');
+      }
+
+      if (state.password === true) {
+        this.passwordInputTarget.classList.remove('not-legit');
+        this.passwordInputTarget.classList.add('is-legit');
+      }
+
+      if (state.password === false) {
+        this.passwordInputTarget.classList.remove('is-legit');
+        this.passwordInputTarget.classList.add('not-legit');
+      }
+
+      if (state.button === "success") {
         event.submitter.classList.remove('btn-danger');
         event.submitter.classList.add('btn-success');
-      } else {
-        if (email.trim() === "") {
-          this.emailInputTarget.classList.add('not-legit');
-        }
+      }
 
-        event.submitter.innerText = "Retry";
+      if (state.button === "danger") {
         event.submitter.classList.remove('btn-success');
         event.submitter.classList.add('btn-danger');
       }
     }
-    /*  forgotHandler(){
-        Turbolinks.visit("./forgot.html")
-      }
-    
-      backToLoginHandler(){
-        Turbolinks.visit("../index.html")
-      }
-    */
-
   }]);
 
   return _default;
 }(__WEBPACK_IMPORTED_MODULE_0_stimulus__["b" /* Controller */]);
 
-_default.targets = ["content", "passwordInput", "emailInput", "validCheckmark", "passwordField"];
+_default.targets = ["content", "passwordInput", "emailInput", "validCheckmark", "passwordField", "button"];
 
-
-/***/ }),
-/* 38 */
-/***/ (function(module, exports) {
-
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _wrapNativeSuper(Class) { var _cache = typeof Map === "function" ? new Map() : undefined; _wrapNativeSuper = function _wrapNativeSuper(Class) { if (Class === null || !_isNativeFunction(Class)) return Class; if (typeof Class !== "function") { throw new TypeError("Super expression must either be null or a function"); } if (typeof _cache !== "undefined") { if (_cache.has(Class)) return _cache.get(Class); _cache.set(Class, Wrapper); } function Wrapper() { return _construct(Class, arguments, _getPrototypeOf(this).constructor); } Wrapper.prototype = Object.create(Class.prototype, { constructor: { value: Wrapper, enumerable: false, writable: true, configurable: true } }); return _setPrototypeOf(Wrapper, Class); }; return _wrapNativeSuper(Class); }
-
-function _construct(Parent, args, Class) { if (_isNativeReflectConstruct()) { _construct = Reflect.construct; } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
-
-function _isNativeFunction(fn) { return Function.toString.call(fn).indexOf("[native code]") !== -1; }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-var Password = /*#__PURE__*/function (_HTMLElement) {
-  _inherits(Password, _HTMLElement);
-
-  var _super = _createSuper(Password);
-
-  function Password() {
-    _classCallCheck(this, Password);
-
-    return _super.apply(this, arguments);
-  }
-
-  _createClass(Password, [{
-    key: "connectedCallback",
-    value: function connectedCallback() {
-      this.innerHTML = "\n      <div class=\"wrap-input validate-input\"\n           data-target=\"refreshable.passwordInput\"\n      >\n        <span class=\"fa-input-icon\">\n          <i class=\"fa fa-lock\"></i>\n        </span>\n        <span class=\"btn-show-pass\" >\n          <i class=\"fa fa-eye\" data-action=\"click->refreshable#togglePasswordVisiblity\"></i>\n        </span>\n        <input\n          id=\"password\"\n          class=\"input-field\"\n          type=\"password\"\n          name=\"password\"\n          placeholder=\"Password\"\n          data-target=\"refreshable.passwordField\"\n          required\n        >\n        <span class=\"focus-input\" data-placeholder=\"\"></span>\n      </div>\n    ";
-    }
-  }]);
-
-  return Password;
-}( /*#__PURE__*/_wrapNativeSuper(HTMLElement));
-
-customElements.define('password-component', Password);
-
-/***/ }),
-/* 39 */
-/***/ (function(module, exports) {
-
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _wrapNativeSuper(Class) { var _cache = typeof Map === "function" ? new Map() : undefined; _wrapNativeSuper = function _wrapNativeSuper(Class) { if (Class === null || !_isNativeFunction(Class)) return Class; if (typeof Class !== "function") { throw new TypeError("Super expression must either be null or a function"); } if (typeof _cache !== "undefined") { if (_cache.has(Class)) return _cache.get(Class); _cache.set(Class, Wrapper); } function Wrapper() { return _construct(Class, arguments, _getPrototypeOf(this).constructor); } Wrapper.prototype = Object.create(Class.prototype, { constructor: { value: Wrapper, enumerable: false, writable: true, configurable: true } }); return _setPrototypeOf(Wrapper, Class); }; return _wrapNativeSuper(Class); }
-
-function _construct(Parent, args, Class) { if (_isNativeReflectConstruct()) { _construct = Reflect.construct; } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
-
-function _isNativeFunction(fn) { return Function.toString.call(fn).indexOf("[native code]") !== -1; }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-var Email = /*#__PURE__*/function (_HTMLElement) {
-  _inherits(Email, _HTMLElement);
-
-  var _super = _createSuper(Email);
-
-  function Email() {
-    _classCallCheck(this, Email);
-
-    return _super.apply(this, arguments);
-  }
-
-  _createClass(Email, [{
-    key: "connectedCallback",
-    value: function connectedCallback() {
-      this.innerHTML = "\n      <div\n        class=\"wrap-input validate-input\"\n        data-target=\"refreshable.emailInput\"\n        >\n        <span class=\"fa-input-icon\">\n          <i class=\"fa fa-user\"></i>\n        </span>\n        <span class=\"btn-show-pass\">\n          <i class=\"fa\" aria-hidden=\"true\" data-target=\"refreshable.validCheckmark\"></i>\n        </span>\n        <input\n          class=\"input-field\"\n          type=\"email\"\n          name=\"email\"\n          placeholder=\"Email\"\n          required\n        />\n        <span class=\"focus-input\" data-placeholder=\"\"></span>\n      </div>\n    ";
-    }
-  }]);
-
-  return Email;
-}( /*#__PURE__*/_wrapNativeSuper(HTMLElement));
-
-customElements.define('email-component', Email);
 
 /***/ })
 /******/ ]);

@@ -12,7 +12,7 @@
   <div class="limiter">
     <div class="container-login" data-controller="refreshable">
       <div class="wrap-login">
-        <form action="" class="login-form validate-form"  data-action="submit->refreshable#resetHandler">
+        <form action="" class="login-form validate-form"  data-action="submit->refreshable#signUpHandler">
           <span class="login-form-logo">
             <i class="" id="logo-top"></i>
             <i class="" id="logo-bottom"></i>
@@ -31,7 +31,7 @@
               <a class="login-forgot-btn" href="/forgot">Reset password</a>
             </div>
             <div class="wrap-login-form-btn">
-							<button class="login-form-btn">
+							<button class="login-form-btn" data-target="refreshable.button">
 								Sign Up
               </button>
             </div>

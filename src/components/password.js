@@ -17,6 +17,8 @@ class Password extends HTMLElement {
           name="password"
           placeholder="Password"
           data-target="refreshable.passwordField"
+          minlength="8"
+          maxlength="32"
           required
         >
         <span class="focus-input" data-placeholder=""></span>

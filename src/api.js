@@ -20,8 +20,9 @@ function getLogins() {
 
 export function getUser(email, pass){
     getLogins()
+    console.log(email, pass)
     if (cachedLogins.get(email) === pass) {
-      return true
+      return {isAuth: true}
     } else if (cachedLogins.get(email)){
       throw new LoginException("password");
     } else {
@@ -29,10 +30,25 @@ export function getUser(email, pass){
     }
 }
 
-export function getEmail(email){
+export function newUser(email, pass){
     getLogins()
-    let isLegit = cachedLogins.has(email)
-    return isLegit
+    if (cachedLogins.get(email)) {
+      throw new LoginException("email");
+    } else {
+      addUser(email, pass)
+      return {registered: true}
+    }
+}
+
+export function resetEmail(email){
+    getLogins()
+    let status = cachedLogins.has(email)
+    return status
+}
+
+function addUser(email, pass) {
+    cachedLogins.set(email, pass)
+    localStorage.setItem('users', JSON.stringify(Array.from(cachedLogins)))
 }
 
 function LoginException(message) {

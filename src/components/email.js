@@ -16,6 +16,7 @@ class Email extends HTMLElement {
           type="email"
           name="email"
           placeholder="Email"
+          maxlength="64"
           required
         />
         <span class="focus-input" data-placeholder=""></span>
