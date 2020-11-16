@@ -20,7 +20,6 @@ function getLogins() {
 
 export function getUser(email, pass){
     getLogins()
-    console.log(email, pass)
     if (cachedLogins.get(email) === pass) {
       return {isAuth: true}
     } else if (cachedLogins.get(email)){

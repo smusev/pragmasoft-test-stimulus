@@ -277,32 +277,6 @@ input:valid:not(:focus):not(:placeholder-shown) + .focus-input::before{
 }
 
 
-/* delete it
-.input-field:focus + .focus-input::after {
-  top: -15px;
-}
-
-
-.input-field:focus + .focus-input::before {
-  width: 50%;
-}
-
-
-.input-field:focus + .focus-input::before ~ .btn-show-pass {
-  width: 100%;
-}
-
-.has-val.input-field + .focus-input::after {
-  top: -15px;
-
-}
-
-.has-val.input-field + .focus-input::before {
-  width: 50%;
-}
-*/
-
-
 
 .fa-input-icon {
   font-size: 16px;
@@ -341,7 +315,6 @@ input:valid:not(:focus):not(:placeholder-shown) + .focus-input::before{
 .btn-show-pass {
   font-size: 15px;
   color: #999999;
-
   display: -webkit-box;
   display: -webkit-flex;
   display: -moz-box;
@@ -360,21 +333,6 @@ input:valid:not(:focus):not(:placeholder-shown) + .focus-input::before{
   transition: all 0.4s;
 }
 
-.btn-show-pass:hover {
-  color: #6a7dfe;
-  color: -webkit-linear-gradient(left, #21d4fd, #b721ff);
-  color: -o-linear-gradient(left, #21d4fd, #b721ff);
-  color: -moz-linear-gradient(left, #21d4fd, #b721ff);
-  color: linear-gradient(left, #21d4fd, #b721ff);
-}
-
-.btn-show-pass.active {
-  color: #6a7dfe;
-  color: -webkit-linear-gradient(left, #21d4fd, #b721ff);
-  color: -o-linear-gradient(left, #21d4fd, #b721ff);
-  color: -moz-linear-gradient(left, #21d4fd, #b721ff);
-  color: linear-gradient(left, #21d4fd, #b721ff);
-}
 
 /* ----[ Button ]--------- */
 
@@ -568,10 +526,4 @@ input:valid:not(:focus):not(:placeholder-shown) + .focus-input::before{
   width: 100%;
   background: black;
   transform: skew(0deg, 150deg);
-}
-
-
-@media (max-width: 576px) {
-  .wrap-login {
-  }
 }

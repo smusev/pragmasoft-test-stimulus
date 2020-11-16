@@ -65,7 +65,6 @@ export default class extends Controller {
   setFormState(state){
     this.contentTarget.innerHTML = state.message
     event.submitter.innerText = state.buttonText
-    console.log(state)
     if (state.email === true){
       this.emailInputTarget.classList.remove('not-legit')
       this.emailInputTarget.classList.add('is-legit')

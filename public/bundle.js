@@ -681,7 +681,6 @@ function getLogins() {
 
 function getUser(email, pass) {
   getLogins();
-  console.log(email, pass);
 
   if (cachedLogins.get(email) === pass) {
     return {
@@ -2475,7 +2474,6 @@ var _default = /*#__PURE__*/function (_Controller) {
     value: function setFormState(state) {
       this.contentTarget.innerHTML = state.message;
       event.submitter.innerText = state.buttonText;
-      console.log(state);
 
       if (state.email === true) {
         this.emailInputTarget.classList.remove('not-legit');
